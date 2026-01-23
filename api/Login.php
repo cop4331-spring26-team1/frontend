@@ -13,15 +13,51 @@
 	}
 	else
 	{
-		$stmt = $conn->prepare("SELECT ID, FirstName, LastName, Password FROM Users WHERE Login=?");
-		$stmt->bind_param("s", $inData["login"]);
+		// Get login value - check both cases (prioritize capital as per user input)
+		$login = "";
+		if( isset($inData["Login"]) )
+		{
+			$login = trim($inData["Login"]);
+		}
+		else if( isset($inData["login"]) )
+		{
+			$login = trim($inData["login"]);
+		}
+		
+		if( $login == "" )
+		{
+			returnWithError("Login field is required");
+		}
+		
+		// Get password value - check both cases (prioritize capital as per user input)
+		$password = "";
+		if( isset($inData["Password"]) )
+		{
+			$password = $inData["Password"];
+		}
+		else if( isset($inData["password"]) )
+		{
+			$password = $inData["password"];
+		}
+		
+		if( $password == "" )
+		{
+			returnWithError("Password field is required");
+		}
+		
+		// Query Users table with exact column names: Login, Password, FirstName, LastName, ID
+		$stmt = $conn->prepare("SELECT ID, FirstName, LastName, Password FROM Users WHERE Login = ?");
+		$stmt->bind_param("s", $login);
 		$stmt->execute();
 		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
 
-		if( $row = $result->fetch_assoc()  )
+		if( $row )
 		{
 			// Verify password using password_verify for hashed passwords
-			if( password_verify($inData["password"], $row['Password']) )
+			$storedPassword = $row['Password'];
+			
+			if( password_verify($password, $storedPassword) )
 			{
 				returnWithInfo( $row['FirstName'], $row['LastName'], $row['ID'] );
 			}
