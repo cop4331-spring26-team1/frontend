@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Contact Manager</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
     <div class="login-container">
@@ -13,7 +14,7 @@
                 <h1>Contact Manager</h1>
                 <p>Sign in to your account</p>
             </div>
-            <form class="login-form" action="#" method="POST">
+            <form class="login-form" onsubmit="doLogin(); return false;">
                 <div class="form-group">
                     <label for="username">Username or Email</label>
                     <input 
@@ -43,6 +44,7 @@
                     </label>
                     <a href="#" class="forgot-password">Forgot password?</a>
                 </div>
+                <span id="loginResult" class="login-result"></span>
                 <button type="submit" class="login-button">Sign In</button>
             </form>
             <div class="login-footer">
