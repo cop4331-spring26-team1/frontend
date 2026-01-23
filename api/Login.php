@@ -54,10 +54,10 @@
 
 		if( $row )
 		{
-			// Verify password using password_verify for hashed passwords
+			// Verify password using plain text comparison
 			$storedPassword = $row['Password'];
 			
-			if( password_verify($password, $storedPassword) )
+			if( $password === $storedPassword )
 			{
 				returnWithInfo( $row['FirstName'], $row['LastName'], $row['ID'] );
 			}
