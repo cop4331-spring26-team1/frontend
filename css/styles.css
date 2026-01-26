@@ -191,6 +191,68 @@ body {
   text-decoration: underline;
 }
 
+.logged-in-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.user-banner {
+  background: white;
+  border-radius: 12px;
+  padding: 20px 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  font-size: 18px;
+  color: #333;
+}
+
+.user-info strong {
+  color: #667eea;
+}
+
+.logout-button {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.content-area {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.content-area h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.welcome-message {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
 /* Responsive Design */
 @media (max-width: 480px) {
   .login-card {
