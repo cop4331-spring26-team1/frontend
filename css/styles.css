@@ -191,6 +191,8 @@ body {
   text-decoration: underline;
 }
 
+/* Styles for the logged in dashboard: contacts.html */
+
 .logged-in-container {
   max-width: 1200px;
   margin: 0 auto;
