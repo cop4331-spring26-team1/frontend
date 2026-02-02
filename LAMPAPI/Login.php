@@ -45,14 +45,28 @@
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"id":0,"FirstName":"","LastName":"","error":"' . $err . '"}';
-		sendResultInfoAsJson( $retValue );
+		// $retValue = '{"id":0,"FirstName":"","LastName":"","error":"' . $err . '"}';
+		// sendResultInfoAsJson( $retValue );
+
+		sendResultInfoAsJson(json_encode([
+			"id" => 0,
+			"firstName" => "",
+			"lastName" => "",
+			"error" =>
+		]));
 	}
 	
 	function returnWithInfo( $FirstName, $LastName, $id )
 	{
-		$retValue = '{"id":' . $id . ',"FirstName":"' . $FirstName . '","LastName":"' . $LastName . '","error":""}';
-		sendResultInfoAsJson( $retValue );
+		// $retValue = '{"id":' . $id . ',"FirstName":"' . $FirstName . '","LastName":"' . $LastName . '","error":""}';
+		// sendResultInfoAsJson( $retValue );
+
+		sendResultInfoAsJson(json_encode([
+			"id" => $id,
+			"firstName" => $FirstName,
+			"lastName" => $LastName,
+			"error" => ""
+		]));
 	}
 	
 ?>
