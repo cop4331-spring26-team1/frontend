@@ -48,12 +48,14 @@
 		// $retValue = '{"id":0,"FirstName":"","LastName":"","error":"' . $err . '"}';
 		// sendResultInfoAsJson( $retValue );
 
-		sendResultInfoAsJson(json_encode([
+		$retValue = json_encode(array(
 			"id" => 0,
 			"firstName" => "",
-			"lastName" => "",
-			"error" =>
-		]));
+			lastName => "",
+			"error" => $err
+		));
+
+		sendResultInfoAsJson($retValue);
 	}
 	
 	function returnWithInfo( $FirstName, $LastName, $id )
@@ -61,12 +63,14 @@
 		// $retValue = '{"id":' . $id . ',"FirstName":"' . $FirstName . '","LastName":"' . $LastName . '","error":""}';
 		// sendResultInfoAsJson( $retValue );
 
-		sendResultInfoAsJson(json_encode([
+		$retValue = json_encode(array(
 			"id" => $id,
 			"firstName" => $FirstName,
 			"lastName" => $LastName,
 			"error" => ""
-		]));
+		));
+		
+		sendResultInfoAsJson($retValue);
 	}
 	
 ?>
