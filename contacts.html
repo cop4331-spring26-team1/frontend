@@ -97,25 +97,47 @@
           </div>
           <form class="login-form" onsubmit="doLogin(); return false;">
             <div class="form-group">
-              <label for="username">Name</label>
+              <label for="FirstName">First Name</label>
               <input
                 type="text"
-                id="contactname"
-                name="contactname"
-                placeholder="Enter Contact Name"
+                id="contactFirstName"
+                name="FirstName"
+                placeholder="First Name"
                 required
-                autocomplete="contactname"
+                autocomplete="FirstName"
               />
             </div>
             <div class="form-group">
-              <label for="number">Number</label>
+              <label for="LastName">Last Name</label>
               <input
-                type="password"
-                id="contactnumber"
-                name="contactnumber"
-                placeholder="Enter Contact Number"
+                type="text"
+                id="contactLastName"
+                name="LastName"
+                placeholder="LastName"
                 required
-                autocomplete="contactnumber"
+                autocomplete="LastName"
+              />
+            </div>
+            <div class="form-group">
+              <label for="number">Phone Number</label>
+              <input
+                type="text"
+                id="contactPhone"
+                name="Phone"
+                placeholder="Phone Number"
+                required
+                autocomplete="Phone"
+              />
+            </div>
+            <div class="form-group">
+              <label for="number">Email Address</label>
+              <input
+                type="text"
+                id="contactEmail"
+                name="Email"
+                placeholder="Enter Email Address"
+                required
+                autocomplete="Email"
               />
             </div>
             <span id="loginResult" class="login-result"></span>
