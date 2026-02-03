@@ -51,7 +51,7 @@
 		$retValue = json_encode(array(
 			"id" => 0,
 			"firstName" => "",
-			lastName => "",
+			"lastName" => "",
 			"error" => $err
 		));
 
