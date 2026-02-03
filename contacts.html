@@ -95,14 +95,14 @@
           <div class="login-header">
             <h1>Enter Contact Information</h1>
           </div>
-          <form class="login-form" onsubmit="doLogin(); return false;">
+          <form class="login-form" onsubmit="addContact(); return false;">
             <div class="form-group">
               <label for="FirstName">First Name</label>
               <input
                 type="text"
                 id="contactFirstName"
                 name="FirstName"
-                placeholder="First Name"
+                placeholder="Enter First Name"
                 required
                 autocomplete="FirstName"
               />
@@ -113,7 +113,7 @@
                 type="text"
                 id="contactLastName"
                 name="LastName"
-                placeholder="LastName"
+                placeholder="Enter Last Name"
                 required
                 autocomplete="LastName"
               />
@@ -124,7 +124,7 @@
                 type="text"
                 id="contactPhone"
                 name="Phone"
-                placeholder="Phone Number"
+                placeholder="Enter Phone Number"
                 required
                 autocomplete="Phone"
               />
@@ -140,10 +140,9 @@
                 autocomplete="Email"
               />
             </div>
-            <span id="loginResult" class="login-result"></span>
+            <span id="contactResult" class="login-result"></span>
             <button type="submit" class="login-button">Add</button>
-            <span id="loginResult" class="login-result"></span>
-            <button type="submit" class="login-button">Search</button>
+            <button type="button" class="login-button">Search</button>
           </form>
         </div>
       </div>
