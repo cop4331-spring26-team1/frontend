@@ -1,4 +1,4 @@
-const urlBase = 'https://small.liamab.com/api';
+const urlBase = 'http://134.199.207.149/LAMPAPI';
 const extension = 'php';
 
 let userId = 0;
@@ -56,6 +56,44 @@ function doLogin()
 
 }
 
+function addContact(){
+	let firstName = document.getElementById("contactFirstName").value;
+	let lastName = document.getElementById("contactLastName").value;
+	let phone = document.getElementById("contactPhone").value;
+	let email = document.getElementById("contactEmail").value;
+
+	let tmp = {
+		firstName: firstName,
+		lastName: lastName,
+		phone: phone,
+		email: email,
+		userId: userId
+	};
+
+	let jsonPayload = JSON.stringify(tmp);
+	let url = urlBase + "/AddContact.php";
+
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4){
+			let response = JSON.parse(xhr.responseText);
+
+			if(response.success){
+				document.getElementById("contactResult").innerHTML = "Contact added successfully!"
+			}
+			else{
+				document.getElementById("contactResult").innerHTML = "Error: " + response.error;
+				
+			}
+		}
+	};
+
+	xhr.send(jsonPayload);
+}
+
 function saveCookie()
 {
 	let minutes = 20;
@@ -105,4 +143,3 @@ function doLogout()
 	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 	window.location.href = "index.html";
 }
-
