@@ -3,86 +3,144 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contacts - Contact Manager</title>
+    <title>Contact Manager</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript">
-      document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-          readCookie();
-        },
-        false
-      );
-    </script>
+    <script type="text/javascript" src="js/code.js"></script>
   </head>
-  <body>
-    <div class="logged-in-container">
-      <div class="user-banner">
-        <div class="user-info">
-          <span id="userName">"user" Let's dive in</span>
-        </div>
-        <button type="button" class="logout-button" onclick="doLogout();">
+
+  <body class="pageBody" onload="initContactsPage();">
+    <a class="skipLink" href="#main">Skip to main content</a>
+
+    <main id="main" class="pageWrap">
+      <div class="topBar card">
+        <div class="topBarLeft" id="userName"></div>
+        <button class="btnSecondary" type="button" onclick="doLogout();">
           Log Out
         </button>
       </div>
 
-      <div class="login-container">
-        <div class="login-card">
-          <div class="login-header">
-            <h1>Enter Contact Information</h1>
-          </div>
-          <form class="login-form" onsubmit="addContact(); return false;">
-            <div class="form-group">
-              <label for="FirstName">First Name</label>
+      <div class="gridTwo">
+        <section class="card" aria-label="Contact manager">
+          <h1 class="titleSmall">Contact Manager</h1>
+          <p class="subtitleSmall">
+            Add, search, edit, and delete your contacts
+          </p>
+
+          <div class="two-col">
+            <div class="formGroup">
+              <label class="label" for="contactFirstName">First name</label>
               <input
-                type="text"
+                class="input"
                 id="contactFirstName"
-                name="FirstName"
-                placeholder="Enter First Name"
+                type="text"
+                placeholder="First name"
+                autocomplete="given-name"
                 required
-                autocomplete="FirstName"
               />
             </div>
-            <div class="form-group">
-              <label for="LastName">Last Name</label>
+
+            <div class="formGroup">
+              <label class="label" for="contactLastName">Last name</label>
               <input
-                type="text"
+                class="input"
                 id="contactLastName"
-                name="LastName"
-                placeholder="Enter Last Name"
-                required
-                autocomplete="LastName"
-              />
-            </div>
-            <div class="form-group">
-              <label for="number">Phone Number</label>
-              <input
                 type="text"
-                id="contactPhone"
-                name="Phone"
-                placeholder="Enter Phone Number"
+                placeholder="Last name"
+                autocomplete="family-name"
                 required
-                autocomplete="Phone"
               />
             </div>
-            <div class="form-group">
-              <label for="number">Email Address</label>
-              <input
-                type="text"
-                id="contactEmail"
-                name="Email"
-                placeholder="Enter Email Address"
-                required
-                autocomplete="Email"
-              />
-            </div>
-            <span id="contactResult" class="login-result"></span>
-            <button type="submit" class="login-button">Add</button>
-            <button type="button" class="login-button">Search</button>
-          </form>
-        </div>
+          </div>
+
+          <div class="formGroup">
+            <label class="label" for="contactPhone">Phone</label>
+            <input
+              class="input"
+              id="contactPhone"
+              type="tel"
+              inputmode="numeric"
+              autocomplete="tel"
+              placeholder="10 digits needed"
+              required
+              pattern="^\d{3}-\d{3}-\d{4}$"
+              title="Phone must be 10 digits and will format as 407-222-4567"
+            />
+          </div>
+
+          <div class="formGroup">
+            <label class="label" for="contactEmail">Email</label>
+            <input
+              class="input"
+              id="contactEmail"
+              type="email"
+              autocomplete="email"
+              placeholder="example: name@example.com"
+              required
+              title="Email format example name@example.com"
+            />
+          </div>
+
+          <span
+            id="contactAddResult"
+            class="login-result"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          ></span>
+
+          <button
+            class="btnPrimary btnWide"
+            type="button"
+            onclick="addContact();"
+          >
+            Add Contact
+          </button>
+
+          <div class="spacer"></div>
+
+          <div class="formGroup">
+            <label class="label" for="searchText">Search</label>
+            <input
+              class="input"
+              id="searchText"
+              type="text"
+              placeholder="Search by first name, last name, phone, or email"
+              autocomplete="off"
+            />
+          </div>
+
+          <span
+            id="contactSearchResult"
+            class="login-result"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          ></span>
+
+          <div class="buttonRow">
+            <button
+              class="btnPrimary btnWide"
+              type="button"
+              onclick="searchContacts();"
+            >
+              Search
+            </button>
+            <button
+              class="btnPrimary btnWide"
+              type="button"
+              onclick="listAllContacts();"
+            >
+              List All
+            </button>
+          </div>
+        </section>
+
+        <section class="card" aria-label="Results">
+          <h2 class="titleSmall">Results</h2>
+          <p class="subtitleSmall">Edit or delete from here</p>
+          <div id="contactList" class="resultsBox" role="list"></div>
+        </section>
       </div>
-    </div>
+    </main>
   </body>
 </html>

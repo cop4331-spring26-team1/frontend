@@ -1,0 +1,118 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | Contact Manager</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script type="text/javascript" src="js/code.js"></script>
+  </head>
+  <body>
+    <a class="skiplink" href="#main">Skip to main content</a>
+
+    <header class="bubbleMenu" aria-label="Top menu">
+      <a class="bubbleLink" href="index.html">Main</a>
+      <a class="bubbleLink" href="login.html">Login</a>
+      <a class="bubbleLink" href="register.html">Register</a>
+    </header>
+
+    <main id="main" class="login-container" tabindex="-1">
+      <div class="login-card">
+        <div class="login-header">
+          <h1>Contact Manager</h1>
+          <p>Let’s dive in to create your account</p>
+        </div>
+
+        <form
+          class="login-form"
+          onsubmit="doRegister(); return false;"
+          aria-label="Registration form"
+        >
+          <div class="two-col">
+            <div class="form-group">
+              <label for="firstName">First name</label>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                placeholder="First name"
+                required
+                autocomplete="given-name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="lastName">Last name</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="Last name"
+                required
+                autocomplete="family-name"
+              />
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Choose a username"
+                required
+                autocomplete="username"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+
+              <div class="password-wrap">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Create a password"
+                  required
+                  autocomplete="new-password"
+                />
+                <button
+                  type="button"
+                  class="eye-button"
+                  aria-label="Show password"
+                  aria-pressed="false"
+                  onclick="togglePasswordVisibility();"
+                >
+                  👁
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <span
+            id="registerResult"
+            class="login-result"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          ></span>
+
+          <button type="submit" class="login-button">Register</button>
+        </form>
+
+        <div class="login-footer">
+          <p>Group 1 - COP 4331</p>
+        </div>
+      </div>
+    </main>
+
+    <div class="floatBubbles" aria-hidden="true"></div>
+    <script type="text/javascript" src="js/bubbles.js"></script>
+
+    <script type="text/javascript" src="js/register.js"></script>
+  </body>
+</html>
