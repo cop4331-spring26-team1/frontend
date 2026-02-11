@@ -1,5 +1,4 @@
 - implement the endpoints for the contacts page
 - sending cookies from the client is not safe
-change DB to 255 characters
-
-valid usernmae length, password length, 
+- DB schema changed to allow hashed passwords
+- validation for username password length etc
