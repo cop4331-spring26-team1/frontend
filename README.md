@@ -31,15 +31,15 @@ API Dev Documentation: Swagger
 
 ## Important Setup Files
 
-`public/js/util.js`
-
 Change the API urlbase
 
-`/LAMPAPI/Util.php`
+`/public/js/util.js`
 
 Change the Database Credentials 
 
-## How to Setup Testing
+`/LAMPAPI/Util.php`
+
+## Testing On Local Machine Example
 
 1. Install XAMPP 
 2. Move project to `C:\xampp\htdocs\SmallProject`
