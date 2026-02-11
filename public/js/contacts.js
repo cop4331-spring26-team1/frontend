@@ -161,7 +161,8 @@ export function renderContacts(results) {
             <strong>${c.FirstName} ${c.LastName}</strong><br>
             ${c.Phone}<br>
             ${c.Email}<br>
-            <button class="btn-delete" data-id="${c.ID}">Delete</button>
+            <button class="small-button btn-edit" data-id="${c.ID}">Edit</button>
+            <button class="small-button btn-delete" data-id="${c.ID}">Delete</button>
         </div>
     `).join("");
 }

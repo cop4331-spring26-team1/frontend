@@ -5,8 +5,8 @@ const loginEl = document.getElementById("username");
 const passEl = document.getElementById("password");
 const resultEl = document.getElementById("loginResult");
 
-loginEl.value = "user"
-passEl.value = "pass"
+// loginEl.value = "user" // DEBUG
+// passEl.value = "pass"
 
 if (form) {
   form.addEventListener("submit", async (e) => {

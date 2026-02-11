@@ -12,10 +12,10 @@ const resultEl = document.getElementById("registerResult");
 const eyeBtn = document.querySelector(".eye-button");
 const form = document.querySelector(".login-form");
 
-firstEl.value = "john"
-lastEl.value = "smith"
-userEl.value = "user"
-passEl.value = "pass"
+// firstEl.value = "john" //DEBUG
+// lastEl.value = "smith"
+// userEl.value = "user"
+// passEl.value = "pass"
 
 // Event listeners
 if (eyeBtn) eyeBtn.addEventListener("click", togglePasswordVisibility);
