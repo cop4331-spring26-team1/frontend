@@ -37,7 +37,7 @@ if ($conn->connect_error) {
 				"success" => true
             );
 
-            sendResultInfoAsJson($retValue);
+            sendJson($retValue);
         } else {
             returnWithError("Invalid password");
         }

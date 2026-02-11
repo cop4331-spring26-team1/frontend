@@ -42,21 +42,22 @@ function getRequestInfo(){
     return json_decode(file_get_contents('php://input'), true);
 }
 
-function sendResultInfoAsJson($data){
+function sendJson($data){
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
     exit; // stops PHP from sending anything else
 }
 
 function returnWithError($err){
-    sendResultInfoAsJson([
+    sendJson([
         "success" => false,
         "error" => $err
     ]);
 }
 
-function returnWithSuccess(){
-    sendResultInfoAsJson([
-        "success" => true
+function returnWithSuccess($msg){
+    sendJson([
+        "success" => true,
+        "msg" => $msg
     ]);
 }
 

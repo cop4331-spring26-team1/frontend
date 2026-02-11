@@ -41,7 +41,7 @@ $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password)
 $stmt->bind_param("ssss", $firstName, $lastName, $username, $hashedPassword);
 
 if ($stmt->execute()) {
-    returnWithSuccess();
+    returnWithSuccess("default");
 } else {
     returnWithError($stmt->error);
 }

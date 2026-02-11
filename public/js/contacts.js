@@ -1,288 +1,189 @@
-// contacts.js — handles contacts page only
+// contacts.js
 import {
-    urlBase,
-    extension,
-    userState,
-    readCookie,
-    setStatus,
-    formatPhone,
-    doLogout
+  urlBase,
+  extension,
+  userState,
+  readCookie,
+  setStatus,
+  formatPhone,
+  doLogout
 } from "./util.js";
 
-/**
- * Initialize contacts page
- */
 export function initContactsPage() {
-    readCookie();
-    wirePhoneAutoFormat();
+  readCookie();
+  wirePhoneAutoFormat();
 
-    const listEl = document.getElementById("contactList");
-    if (listEl) listEl.innerHTML = "";
+  const listEl = document.getElementById("contactList");
+  if (listEl) listEl.innerHTML = "";
 
-    const addResultEl = document.getElementById("contactAddResult");
-    const searchResultEl = document.getElementById("contactSearchResult");
-    setStatus(addResultEl, "", false, false, 0);
-    setStatus(searchResultEl, "", false, false, 0);
+  setStatus(document.getElementById("contactAddResult"), "", false, false, 0);
+  setStatus(document.getElementById("contactSearchResult"), "", false, false, 0);
 }
 
-/**
- * Auto-format phone input for add/edit forms
- */
 function wirePhoneAutoFormat() {
-    const phoneEl = document.getElementById("contactPhone");
-    if (!phoneEl) return;
+  const phoneEl = document.getElementById("contactPhone");
+  if (!phoneEl) return;
 
-    phoneEl.addEventListener("input", () => {
-        const before = phoneEl.value;
-        const formatted = formatPhone(before);
-        if (before !== formatted) phoneEl.value = formatted;
-    });
+  phoneEl.addEventListener("input", () => {
+    phoneEl.value = formatPhone(phoneEl.value);
+  });
 }
 
-/**
- * Add new contact
- */
+function postJSON(endpoint, data) {
+  return fetch(`${urlBase}/${endpoint}.${extension}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  }).then(r => r.json());
+}
+
 export function addContact() {
-    const firstEl = document.getElementById("contactFirstName");
-    const lastEl = document.getElementById("contactLastName");
-    const phoneEl = document.getElementById("contactPhone");
-    const emailEl = document.getElementById("contactEmail");
-    const resultEl = document.getElementById("contactAddResult");
+  const firstEl = document.getElementById("contactFirstName");
+  const lastEl = document.getElementById("contactLastName");
+  const phoneEl = document.getElementById("contactPhone");
+  const emailEl = document.getElementById("contactEmail");
+  const resultEl = document.getElementById("contactAddResult");
 
-    if (!firstEl || !lastEl || !phoneEl || !emailEl || !resultEl) return;
+  if (!firstEl || !lastEl || !phoneEl || !emailEl || !resultEl) return;
 
-    setStatus(resultEl, "", false, false, 0);
+  const f = firstEl.value.trim();
+  const l = lastEl.value.trim();
+  phoneEl.value = formatPhone(phoneEl.value);
+  const phone = phoneEl.value.trim();
+  const email = emailEl.value.trim();
 
-    const f = (firstEl.value || "").trim();
-    const l = (lastEl.value || "").trim();
-    phoneEl.value = formatPhone(phoneEl.value || "");
-    const phone = (phoneEl.value || "").trim();
-    const email = (emailEl.value || "").trim();
+  if (!f || !l) return;
 
-    if (!f) { firstEl.reportValidity(); firstEl.focus(); return; }
-    if (!l) { lastEl.reportValidity(); lastEl.focus(); return; }
-    if (!phoneEl.checkValidity()) { phoneEl.reportValidity(); return; }
-    if (!emailEl.checkValidity()) { emailEl.reportValidity(); return; }
-
-    console.log(userState.id)
-
-    const tmp = { firstName: f, lastName: l, phone, email, userId: userState.id };
-    const jsonPayload = JSON.stringify(tmp);
-
-    const url = `${urlBase}/AddContact.${extension}`;
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState !== 4) return;
-
-        if (xhr.status !== 200) {
-            setStatus(resultEl, "Server error. Try again.", true, true, 0);
-            return;
-        }
-
-        let jsonObject = {};
-        try { jsonObject = JSON.parse(xhr.responseText); }
-        catch { setStatus(resultEl, "Invalid server response", true, true, 0); return; }
-
-        if (jsonObject.error && jsonObject.error.length > 0) {
-            setStatus(resultEl, jsonObject.error, true, true, 0);
-            return;
-        }
-
-        setStatus(resultEl, "Contact added", false, false, 2500);
-
-        firstEl.value = "";
-        lastEl.value = "";
-        phoneEl.value = "";
-        emailEl.value = "";
-        firstEl.focus();
-
-        const listEl = document.getElementById("contactList");
-        if (listEl) listEl.innerHTML = "";
-    };
-
-    xhr.send(jsonPayload);
-}
-
-/**
- * Search contacts
- */
-export function searchContacts() {
-    const inputEl = document.getElementById("searchText");
-    const resultEl = document.getElementById("contactSearchResult");
-    const listEl = document.getElementById("contactList");
-
-    if (!inputEl || !resultEl || !listEl) return;
-
-    const srch = (inputEl.value || "").trim();
-
-    setStatus(resultEl, "", false, false, 0);
-    listEl.innerHTML = "";
-
-    if (!srch) {
-        setStatus(resultEl, "Enter search text first", true, true, 0);
-        inputEl.focus();
+  postJSON("AddContact", {
+    userId: userState.id,
+    firstName: f,
+    lastName: l,
+    phone,
+    email
+  })
+    .then(json => {
+      if (json.error) {
+        setStatus(resultEl, json.error, true, true, 0);
         return;
-    }
+      }
 
-    const tmp = { search: srch, userId: userState.id };
-    const jsonPayload = JSON.stringify(tmp);
-    const url = `${urlBase}/SearchContacts.${extension}`;
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState !== 4) return;
-
-        if (xhr.status !== 200) { setStatus(resultEl, "Server error. Try again.", true, true, 0); return; }
-
-        let jsonObject = {};
-        try { jsonObject = JSON.parse(xhr.responseText); }
-        catch { setStatus(resultEl, "Invalid server response", true, true, 0); return; }
-
-        if (jsonObject.error && jsonObject.error.length > 0) {
-            setStatus(resultEl, jsonObject.error, true, true, 0);
-            return;
-        }
-
-        const results = jsonObject.results || [];
-        if (!Array.isArray(results) || results.length === 0) {
-            setStatus(resultEl, "No contacts found", false, false, 2500);
-            inputEl.value = "";
-            inputEl.focus();
-            return;
-        }
-
-        setStatus(resultEl, "Contacts retrieved", false, false, 2000);
-        renderContacts(results);
-
-        inputEl.value = "";
-        inputEl.focus();
-    };
-
-    xhr.send(jsonPayload);
+      setStatus(resultEl, "Contact added", false, false, 2000);
+      firstEl.value = lastEl.value = phoneEl.value = emailEl.value = "";
+      listAllContacts();
+    })
+    .catch(() => setStatus(resultEl, "Server error", true, true, 0));
 }
 
-/**
- * List all contacts
- */
+export function searchContacts() {
+  const inputEl = document.getElementById("searchText");
+  const resultEl = document.getElementById("contactSearchResult");
+  const listEl = document.getElementById("contactList");
+  if (!inputEl || !resultEl || !listEl) return;
+
+  const srch = inputEl.value.trim();
+  if (!srch) {
+    setStatus(resultEl, "Enter search text", true, true, 0);
+    return;
+  }
+
+  listEl.innerHTML = "";
+
+  postJSON("SearchContact", {
+    userId: userState.id,
+    search: srch
+  })
+    .then(json => {
+      if (json.error) {
+        setStatus(resultEl, json.error, true, true, 0);
+        return;
+      }
+
+      const results = json.results || [];
+      if (results.length === 0) {
+        setStatus(resultEl, "No contacts found", false, false, 2000);
+        return;
+      }
+
+      renderContacts(results);
+      setStatus(resultEl, "Contacts retrieved", false, false, 2000);
+    })
+    .catch(() => setStatus(resultEl, "Server error", true, true, 0));
+}
+
 export function listAllContacts() {
-    const resultEl = document.getElementById("contactSearchResult");
-    const listEl = document.getElementById("contactList");
-    if (!resultEl || !listEl) return;
+  const resultEl = document.getElementById("contactSearchResult");
+  const listEl = document.getElementById("contactList");
+  if (!resultEl || !listEl) return;
 
-    setStatus(resultEl, "", false, false, 0);
-    listEl.innerHTML = "";
+  listEl.innerHTML = "";
 
-    const tmp = { userId: userState.id };
-    const jsonPayload = JSON.stringify(tmp);
-    const url = `${urlBase}/GetAllContacts.${extension}`;
+  postJSON("GetAllContact", { userId: userState.id })
+    .then(json => {
+      if (json.error) {
+        setStatus(resultEl, json.error, true, true, 0);
+        return;
+      }
 
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+      const results = json.results || [];
+      if (results.length === 0) {
+        setStatus(resultEl, "No contacts yet", false, false, 2000);
+        return;
+      }
 
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState !== 4) return;
-
-        if (xhr.status !== 200) { setStatus(resultEl, "Server error. Try again.", true, true, 0); return; }
-
-        let jsonObject = {};
-        try { jsonObject = JSON.parse(xhr.responseText); }
-        catch { setStatus(resultEl, "Invalid server response", true, true, 0); return; }
-
-        if (jsonObject.error && jsonObject.error.length > 0) {
-            setStatus(resultEl, jsonObject.error, true, true, 0);
-            return;
-        }
-
-        const results = jsonObject.results || [];
-        if (!Array.isArray(results) || results.length === 0) {
-            setStatus(resultEl, "No contacts yet", false, false, 2500);
-            return;
-        }
-
-        setStatus(resultEl, "All contacts loaded", false, false, 2000);
-        renderContacts(results);
-    };
-
-    xhr.send(jsonPayload);
+      renderContacts(results);
+      setStatus(resultEl, "All contacts loaded", false, false, 2000);
+    })
+    .catch(() => setStatus(resultEl, "Server error", true, true, 0));
 }
 
-/**
- * Render contacts in DOM
- */
-export function renderContacts(results) {
-    const listEl = document.getElementById("contactList");
-    if (!listEl) return;
+export function deleteContact(id) {
+  if (!confirm("Delete contact?")) return;
 
-    const html = results.map(c => {
-        const id = c.id;
-        const fullName = safeText(fullNameFromContact(c));
-        const phone = safeText(c.phone);
-        const email = safeText(c.email);
-        const labelName = fullNameFromContact(c) || "contact";
-
-        return `
-      <div class="result-item" id="contact_${id}" role="listitem">
-        <div><strong>${fullName}</strong></div>
-        <div>${phone}</div>
-        <div>${email}</div>
-        <div class="contact-actions">
-          <button class="small-button btn-edit" type="button" aria-label="Edit ${escapeAttr(labelName)}" onclick="beginEditContact(${id});">Edit</button>
-          <button class="small-button btn-delete" type="button" aria-label="Delete ${escapeAttr(labelName)}" onclick="deleteContact(${id});">Delete</button>
-        </div>
-      </div>
-    `;
-    }).join("");
-
-    listEl.innerHTML = html;
-}
-
-// Helper functions
-function safeText(v) { return String(v ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"); }
-function escapeAttr(v) { return String(v ?? "").replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("'", "&#39;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"); }
-function fullNameFromContact(c) { return ((c.firstName ?? "").trim() + " " + (c.lastName ?? "").trim()).trim(); }
-
-// ----------------- EVENT LISTENERS -----------------
-
-// Attach listeners to static buttons
-document.addEventListener("DOMContentLoaded", () => {
-
-    readCookie();
-
-    const addBtn = document.querySelector(".btnPrimary.btnWide"); // the "Add Contact" button
-    if (addBtn) addBtn.addEventListener("click", addContact);
-
-    const searchBtn = document.querySelector("button.btnPrimary.btnWide:nth-of-type(2)"); // Search button
-    if (searchBtn) searchBtn.addEventListener("click", searchContacts);
-
-    const listAllBtn = document.querySelector("button.btnPrimary.btnWide:nth-of-type(3)"); // List All button
-    if (listAllBtn) listAllBtn.addEventListener("click", listAllContacts);
-
-    const logoutBtn = document.querySelector(".topBar .btnSecondary"); // Log Out button
-    if (logoutBtn) logoutBtn.addEventListener("click", () => {
-        doLogout();
+  postJSON("DeleteContact", {
+    userId: userState.id,
+    contactId: id
+  })
+    .then(json => {
+      if (json.error) {
+        alert(json.error);
+        return;
+      }
+      listAllContacts();
     });
+}
 
-    // Event delegation for edit/delete buttons inside contact list
-    const listEl = document.getElementById("contactList");
-    if (listEl) {
-        listEl.addEventListener("click", (e) => {
-            const btn = e.target.closest("button");
-            if (!btn) return;
+export function renderContacts(results) {
+  const listEl = document.getElementById("contactList");
+  if (!listEl) return;
 
-            const idMatch = btn.getAttribute("data-id") || btn.id?.split("_")[1];
-            if (!idMatch) return;
-            const id = parseInt(idMatch);
+  listEl.innerHTML = results.map(c => `
+        <div class="result-item">
+            <strong>${c.FirstName} ${c.LastName}</strong><br>
+            ${c.Phone}<br>
+            ${c.Email}<br>
+            <button class="btn-delete" data-id="${c.ID}">Delete</button>
+        </div>
+    `).join("");
+}
 
-            if (btn.classList.contains("btn-edit")) beginEditContact(id);
-            if (btn.classList.contains("btn-delete")) deleteContact(id);
-        });
-    }
+document.addEventListener("DOMContentLoaded", () => {
+  readCookie();
+
+  document.querySelector("#search")?.addEventListener("click", searchContacts);
+  document.querySelector("#listAll")?.addEventListener("click", listAllContacts);
+  document.querySelector(".btnPrimary")?.addEventListener("click", addContact);
+  document.querySelector(".topBar .btnSecondary")?.addEventListener("click", doLogout);
+
+  const listEl = document.getElementById("contactList");
+
+  listEl?.addEventListener("click", (e) => {
+    const btn = e.target.closest(".btn-delete");
+    if (!btn) return;
+
+    const id = btn.dataset.id;
+    deleteContact(id);
+  });
+
+  listAllContacts();
 });
+

@@ -1,40 +1,20 @@
 <?php
 require_once "Util.php";
 
-// Get Contact data
 $inData = getRequestInfo();
-
-$contactId = $inData["id"] ?? 0;
-$userId = $inData["userId"] ?? 0;
-
-$contactId = intval($contactId);
-$userId = intval($userId);
-
-// Get DB
 $conn = getDB();
-if ($conn->connect_error) {
-    returnWithError($conn->connect_error);
-} else {
-    if ($contactId <= 0 || $userId <= 0) {
-        returnWithError("Missing or invalid id/userId");
-        $conn->close();
-        exit();
-    }
+if ($conn->connect_error) returnWithError($conn->connect_error);
 
-    $stmt = $conn->prepare("DELETE FROM Contacts WHERE ID=? AND UserID=?");
-    $stmt->bind_param("ii", $contactId, $userId);
+$userId = $inData["userId"] ?? 0;
+$contactId = $inData["contactId"] ?? 0;
 
-    if ($stmt->execute()) {
-        if ($stmt->affected_rows > 0) {
-            returnWithSuccess();
-        } else {
-            returnWithError("No Records Found");
-        }
-    } else {
-        returnWithError($stmt->error);
-    }
+$stmt = $conn->prepare("DELETE FROM Contacts WHERE ID=? AND UserID=?");
+$stmt->bind_param("ii", $contactId, $userId);
 
-    $stmt->close();
-    $conn->close();
-}
+$stmt->execute()
+    ? returnWithSuccess("Deleted")
+    : returnWithError($stmt->error);
+
+$stmt->close();
+$conn->close();
 ?>

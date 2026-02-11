@@ -1,4 +1,3 @@
-- implement the endpoints for the contacts page
 - sending cookies from the client is not safe
 - DB schema changed to allow hashed passwords
 - validation for username password length etc

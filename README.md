@@ -9,6 +9,8 @@ test: http://129.212.176.193/
 
 website: https://small.liamab.com/
 
+## Project Details
+
 PM: Gantt Chart | Trello  
 Database: MySQL | Entity Relation Diagram   
 API Dev Documentation: Swagger   

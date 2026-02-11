@@ -2,58 +2,30 @@
 require_once "Util.php";
 
 $inData = getRequestInfo();
-
-// Get Contact Data from Frontend
-$firstName = $inData["firstName"] ?? "";
-$lastName = $inData["lastName"] ?? "";
-$phone = $inData["phone"] ?? "";
-$email = $inData["email"] ?? "";
+$conn = getDB();
+if ($conn->connect_error) returnWithError($conn->connect_error);
 
 $userId = $inData["userId"] ?? 0;
 
-// Validate all fields
-$errors = [];
+$firstName = trim($inData["firstName"] ?? "");
+$lastName  = trim($inData["lastName"] ?? "");
+$phone     = trim($inData["phone"] ?? "");
+$email     = trim($inData["email"] ?? "");
 
-if ($firstName === "") {
-    $errors[] = "First name is required";
+if ($firstName === "" || $lastName === "" || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    returnWithError("Invalid fields");
 }
 
-if ($lastName === "") {
-    $errors[] = "Last name is required";
-}
+$stmt = $conn->prepare(
+    "INSERT INTO Contacts (FirstName, LastName, Phone, Email, UserID)
+     VALUES (?, ?, ?, ?, ?)"
+);
+$stmt->bind_param("ssssi", $firstName, $lastName, $phone, $email, $userId);
 
-// Validate email format
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors[] = "Invalid email address";
-}
+$stmt->execute()
+    ? returnWithSuccess("Contact added")
+    : returnWithError($stmt->error);
 
-// Validate userId
-if (!is_numeric($userId) || $userId <= 0) {
-    $errors[] = "Invalid user ID";
-}
-
-if (!empty($errors)) {
-    echo json_encode(["error" => implode("; ", $errors)]);
-    exit;
-}
-
-// Connect to db
-$conn = getDB();
-
-if ($conn->connect_error) {
-    returnWithError($conn->connect_error);
-} else {
-    // Insert new Contact into Contacts table in SmallProject-DB
-    $stmt = $conn->prepare("INSERT into Contacts (FirstName, LastName, Phone, Email, UserId) VALUES(?,?,?,?,?)");
-    $stmt->bind_param("ssssi", $firstName, $lastName, $phone, $email, $userId);
-
-    if ($stmt->execute()) {
-        returnWithSuccess();
-    } else {
-        returnWithError($stmt->error);
-    }
-
-    $stmt->close();
-    $conn->close();
-}
+$stmt->close();
+$conn->close();
 ?>
