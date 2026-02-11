@@ -5,13 +5,13 @@ A LAMP-based contact management application with user authentication.
 
 ## Website Details
 
-test: http://129.212.176.193/
+Production: https://small.liamab.com/
 
-website: https://small.liamab.com/
+Test/Development: http://129.212.176.193/
 
 ## Project Details
 
-PM: Gantt Chart | Trello  
+Project Managment: Gantt Chart | Trello  
 Database: MySQL | Entity Relation Diagram   
 API Dev Documentation: Swagger   
 
@@ -20,45 +20,44 @@ API Dev Documentation: Swagger
 - Backend: PHP
 - Database: MySQL
 - API: REST-style PHP endpoints
+- Server: Apache
 
 ## Project Structure
 
-- SmallProject/
-  - public/
-  - LAMPAPI/
-  - database/
+```text
+SmallProject/
+├── public/          # HTML, JS, and CSS files (Frontend)
+├── LAMPAPI/         # PHP files (Backend API)
+└── database/        # SQL schema used to create the DB
+```
 
-explanation:   
-public - html/js/css files  
-LAMPAPI - php files for backend  
-database - schema used to create DB
+## Setup & Configuration
 
-## Important Setup Files
+### Connection Strings
 
-Config the API urlbase
+* **API Base URL**: Edit `/public/js/util.js` to point to your server.
+* **DB Credentials**: Edit `/LAMPAPI/Util.php` with your local/server MySQL credentials.
 
-`/public/js/util.js`
+### Local Environment (XAMPP)
 
-Config the Database Credentials 
+* Clone the repository into `C:\xampp\htdocs\SmallProject`.
+* Start **Apache** and **MySQL** via the XAMPP Control Panel.
+* Import the database:
+    * Open `localhost/phpmyadmin`.
+    * Create a new database.
+    * Go to the **Import** tab and upload `database/schema.sql`.
 
-`/LAMPAPI/Util.php`
 
-## Testing On Local Machine Example
 
-1. Install XAMPP 
-2. Move project to `C:\xampp\htdocs\SmallProject`
-- Open **XAMPP Control Panel**  
-- Click **Start** for **Apache** and **MySQL**  
 
-1. Open phpMyAdmin in your browser:  
-`http://localhost/phpmyadmin`
 
-Create a new database
 
-Import the schema:  
-- Go to the **Import** tab  
-- Upload `database/schema.sql` from the repo  
-- Click **Go**  
+
+---
+
+### 3. Accessing the Application
+Once configured, you can access the user interface by navigating to:
+`http://localhost/SmallProject/public/index.html`
 
 
 
