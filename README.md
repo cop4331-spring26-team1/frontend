@@ -63,21 +63,18 @@ Import the schema:
 
 
 ## API
-Base URL: `http://134.199.207.149/LAMPAPI`  
-File extension: `.php`  
-All requests use `POST` with `Content-Type: application/json`.  
-Responses are JSON.
 
-Apache Server
-
-### Endpoints
+**Base URL:** `http://134.199.207.149/LAMPAPI`  
+**Protocol:** All requests use `POST` with `Content-Type: application/json`.  
+**Format:** All responses are returned as JSON objects.
 
 
 
 ---
 
-### Login
-**Endpoint:** `/LAMPAPI/Login.php`  
+## Login
+`POST /Login.php`
+
 **Payload:**
 ```json
 {
@@ -86,25 +83,23 @@ Apache Server
 }
 ```
 **Response:**
-```json
-// Success
-{
-  "id": 3,
-  "firstName": "Alice",
-  "lastName": "Smith"
-}
 
-// Failure
-{
-  "id": 0
-}
+Success: 
+```json
+{ "id": 3, "firstName": "Alice", "lastName": "Smith" }
 ```
 
+Failure: 
+```json
+{ "id": 0 }
+```
 
-### Register
+## Register   
+`POST /Register.php`  
+Used to create a new user account.
 
-Endpoint: `/LAMPAPI/Register.php`  
 **Payload:**
+
 ```json
 {
   "firstName": "Alice",
@@ -113,21 +108,17 @@ Endpoint: `/LAMPAPI/Register.php`
   "password": "password"
 }
 ```
-**Response**
-```json
-// Success
-{}
+**Response:**
 
-// Failure
-{
-  "error": "Username already exists"
-}
-```
+Success: {}
 
-### Add Contact
+Failure: { "error": "Username already exists" }
 
-Endpoint: `/LAMPAPI/AddContact.php`  
-Payload:
+## Add Contact
+`POST /AddContact.php`
+
+**Payload:**
+
 ```json
 {
   "firstName": "Bob",
@@ -138,23 +129,24 @@ Payload:
 }
 ```
 
+**Response:**
 
-Response:
-```json
-// Success
+Success: 
+```json 
 {}
-
-// Failure
-{
-  "error": "Invalid phone number"
-}
 ```
 
-### Search Contacts
-
-Endpoint: `/LAMPAPI/SearchContacts.php`  
-**Payload:**
+Failure: 
 ```json
+{ "error": "Invalid phone number" }
+```
+
+## Search Contacts
+`POST /SearchContact.php`
+
+**Payload:**
+
+```json 
 {
   "search": "Bob",
   "userId": 3
@@ -162,6 +154,7 @@ Endpoint: `/LAMPAPI/SearchContacts.php`
 ```
 
 **Response:**
+
 ```json
 {
   "results": [
@@ -174,57 +167,34 @@ Endpoint: `/LAMPAPI/SearchContacts.php`
     }
   ]
 }
-
-// Failure
-{
-  "error": "No contacts found"
-}
 ```
 
-### Get All Contacts
+## Get All Contacts
+`POST /GetAllContact.php`
 
-Endpoint: `/LAMPAPI/GetAllContacts.php`  
 **Payload:**
+
 ```json
 {
   "userId": 3
 }
 ```
-
 **Response:**
 
 ```json
-// Success
 {
   "results": [
-    {
-      "id": 5,
-      "firstName": "Bob",
-      "lastName": "Jones",
-      "phone": "407-222-4567",
-      "email": "bob@example.com"
-    },
-    {
-      "id": 6,
-      "firstName": "Alice",
-      "lastName": "Smith",
-      "phone": "407-123-4567",
-      "email": "alice@example.com"
-    }
+    { "id": 5, "firstName": "Bob", "lastName": "Jones", "phone": "407-222-4567", "email": "bob@example.com" },
+    { "id": 6, "firstName": "Alice", "lastName": "Smith", "phone": "407-123-4567", "email": "alice@example.com" }
   ]
 }
-
-
-// Failure
-{
-  "error": "No contacts yet"
-}
-```
+``` 
 
 ## Update Contact
+`POST /UpdateContact.php`
 
-Endpoint: `/LAMPAPI/UpdateContact.php`  
 **Payload:**
+
 ```json
 {
   "id": 5,
@@ -235,36 +205,37 @@ Endpoint: `/LAMPAPI/UpdateContact.php`
   "userId": 3
 }
 ```
-
 **Response:**
-```json
-// Success
-{}
 
-// Failure
-{
-  "error": "Invalid contact ID"
-}
+Success: 
+```json
+{}
 ```
 
-### Delete Contact
+Failure: 
+```json
+{ "error": "Invalid contact ID" }
+```
 
-Endpoint: `/LAMPAPI/DeleteContact.php`  
+## Delete Contact
+`POST /DeleteContact.php`
+
 **Payload:**
+
 ```json
 {
   "id": 5,
   "userId": 3
 }
 ```
-
 **Response:**
-```json
-// Success
-{}
 
-// Failure
-{
-  "error": "Cannot delete contact"
-}
+Success: 
+```json
+{}
+```
+
+Failure: 
+```json
+{ "error": "Cannot delete contact" }
 ```

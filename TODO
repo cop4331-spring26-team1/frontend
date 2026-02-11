@@ -2,3 +2,4 @@
 - DB schema changed to allow hashed passwords
 - validation for username password length etc
 - ListAll is automatic : probably not needed
+- no Admin functionality
