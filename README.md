@@ -22,20 +22,22 @@ API Dev Documentation: Swagger
 ## Project Structure
 
 - SmallProject/
+  - public/
   - LAMPAPI/
-  - css/
-  - js/
-    - main.js
-  - README.md
-  - other public files...
+  - database/
+
+explanation:   
+public - html/js/css files  
+LAMPAPI - php files for backend  
+database - schema used to create DB
 
 ## Important Setup Files
 
-Change the API urlbase
+Config the API urlbase
 
 `/public/js/util.js`
 
-Change the Database Credentials 
+Config the Database Credentials 
 
 `/LAMPAPI/Util.php`
 
