@@ -29,7 +29,34 @@ API Dev Documentation: Swagger
   - README.md
   - other public files...
 
-## Setup
+## Important Setup Files
+
+`public/js/util.js`
+
+Change the API urlbase
+
+`/LAMPAPI/Util.php`
+
+Change the Database Credentials 
+
+## How to Setup Testing
+
+1. Install XAMPP 
+2. Move project to `C:\xampp\htdocs\SmallProject`
+- Open **XAMPP Control Panel**  
+- Click **Start** for **Apache** and **MySQL**  
+
+1. Open phpMyAdmin in your browser:  
+`http://localhost/phpmyadmin`
+
+Create a new database
+
+Import the schema:  
+- Go to the **Import** tab  
+- Upload `database/schema.sql` from the repo  
+- Click **Go**  
+
+
 
 ## API
 Base URL: `http://134.199.207.149/LAMPAPI`  
