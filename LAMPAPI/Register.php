@@ -1,18 +1,14 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 0); // don't output errors in HTML
-ini_set('log_errors', 1);     // log them instead
-
 require_once "Util.php";
 
-// Get JSON input
+// Get User Regestration info
 $inData = getRequestInfo();
 
 $firstName = trim($inData["firstName"] ?? "");
-$lastName  = trim($inData["lastName"] ?? "");
-$username  = trim($inData["username"] ?? "");
-$password  = trim($inData["password"] ?? "");
+$lastName = trim($inData["lastName"] ?? "");
+$username = trim($inData["username"] ?? "");
+$password = trim($inData["password"] ?? "");
 
 // Check they have all fields / Validation
 if (!$firstName || !$lastName || !$username || !$password) {
