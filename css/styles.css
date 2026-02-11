@@ -391,7 +391,7 @@ body {
 
 /* Bubble menu */
 .bubbleMenu {
-  position: fixed;
+  position: fixed; /* stays at top */
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
@@ -401,7 +401,12 @@ body {
   align-items: center;
   gap: 14px;
   z-index: 50;
+
+  /* smooth fade effect */
+  transition: opacity 0.3s ease;
+  opacity: 1; /* default fully visible */
 }
+
 
 .bubbleLink {
   width: 130px;
