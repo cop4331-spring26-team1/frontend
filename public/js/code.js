@@ -104,17 +104,6 @@ function initContactsPage() {
   setStatus(searchResultEl, "", false, false, 0);
 }
 
-function togglePasswordVisibility() {
-  const input = document.getElementById("password");
-  const btn = document.querySelector(".eye-button");
-  if (!input || !btn) return;
-
-  const isHidden = input.type === "password";
-  input.type = isHidden ? "text" : "password";
-  btn.setAttribute("aria-pressed", isHidden ? "true" : "false");
-  btn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
-}
-
 function doLogin() {
   userId = 0;
   firstName = "";
@@ -178,76 +167,6 @@ function doLogin() {
       saveCookie();
       if (userId === 1) window.location.href = "admin/admin.html";
       else window.location.href = "contacts.html";
-    };
-
-    xhr.send(jsonPayload);
-  } catch (err) {
-    setStatus(resultEl, err.message, true, true, 0);
-  }
-}
-
-function doRegister() {
-  const firstEl = document.getElementById("firstName");
-  const lastEl = document.getElementById("lastName");
-  const userEl = document.getElementById("username");
-  const passEl = document.getElementById("password");
-  const resultEl = document.getElementById("registerResult");
-
-  if (!firstEl || !lastEl || !userEl || !passEl || !resultEl) return;
-
-  const f = (firstEl.value || "").trim();
-  const l = (lastEl.value || "").trim();
-  const login = (userEl.value || "").trim();
-  const password = (passEl.value || "").trim();
-
-  setStatus(resultEl, "", false, false, 0);
-
-  if (
-    f.length === 0 ||
-    l.length === 0 ||
-    login.length === 0 ||
-    password.length === 0
-  ) {
-    setStatus(resultEl, "Please fill out all fields", true, true, 0);
-    if (f.length === 0) firstEl.focus();
-    else if (l.length === 0) lastEl.focus();
-    else if (login.length === 0) userEl.focus();
-    else passEl.focus();
-    return;
-  }
-
-  const tmp = { firstName: f, lastName: l, login: login, password: password };
-  const jsonPayload = JSON.stringify(tmp);
-
-  const url = urlBase + "/Register." + extension;
-
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", url, true);
-  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-
-  try {
-    xhr.onreadystatechange = function () {
-      if (this.readyState !== 4) return;
-
-      if (this.status !== 200) {
-        setStatus(resultEl, "Server error. Try again.", true, true, 0);
-        return;
-      }
-
-      let jsonObject = {};
-      try {
-        jsonObject = JSON.parse(xhr.responseText);
-      } catch {
-        setStatus(resultEl, "Invalid server response", true, true, 0);
-        return;
-      }
-
-      if (jsonObject.error && jsonObject.error.length > 0) {
-        setStatus(resultEl, jsonObject.error, true, true, 0);
-        return;
-      }
-
-      window.location.href = "login.html";
     };
 
     xhr.send(jsonPayload);
