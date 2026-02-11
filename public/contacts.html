@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
 
-  <body class="pageBody" onload="initContactsPage();">
+  <body class="pageBody">
     <a class="skipLink" href="#main">Skip to main content</a>
 
     <main id="main" class="pageWrap">
       <div class="topBar card">
         <div class="topBarLeft" id="userName"></div>
-        <button class="btnSecondary" type="button" onclick="doLogout();">
+        <button class="btnSecondary" type="button">
           Log Out
         </button>
       </div>
@@ -90,7 +90,6 @@
           <button
             class="btnPrimary btnWide"
             type="button"
-            onclick="addContact();"
           >
             Add Contact
           </button>
@@ -120,14 +119,12 @@
             <button
               class="btnPrimary btnWide"
               type="button"
-              onclick="searchContacts();"
             >
               Search
             </button>
             <button
               class="btnPrimary btnWide"
               type="button"
-              onclick="listAllContacts();"
             >
               List All
             </button>
@@ -142,7 +139,7 @@
       </div>
     </main>
 
-  <script type="text/javascript" src="js/code.js"></script>
+  <script type="module" src="js/contacts.js"></script>
 
   </body>
 </html>
