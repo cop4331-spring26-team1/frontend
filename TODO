@@ -3,3 +3,7 @@
 - validation for username password length etc
 - ListAll is automatic : probably not needed
 - no Admin functionality
+- API testing folder
+- members and roles
+- figure out presentation requirements/who explains what
+- prevent SQL injection

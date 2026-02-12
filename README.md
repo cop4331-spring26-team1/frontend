@@ -11,9 +11,19 @@ Test/Development: http://129.212.176.193/
 
 ## Project Details
 
+### Tools
+
 Project Managment: Gantt Chart | Trello  
 Database: MySQL | Entity Relation Diagram   
 API Dev Documentation: Swagger   
+
+### Roles
+
+Kyle Russell - Database Developer  
+Liam Abernathy - Project Manager  
+Gaspar Dantas - Frontend Developer  
+Kamden Hayes - Backend Developer  
+Dominic Valerio - DevSecOps  
 
 ## Tech Stack Used
 - Frontend: HTML, CSS, JavaScript
@@ -47,15 +57,6 @@ SmallProject/
     * Create a new database.
     * Go to the **Import** tab and upload `database/schema.sql`.
 
-
-
-
-
-
-
----
-
-### 3. Accessing the Application
 Once configured, you can access the user interface by navigating to:
 `http://localhost/SmallProject/public/index.html`
 
