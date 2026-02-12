@@ -26,7 +26,7 @@
 
         <form
           class="login-form"
-          onsubmit="doRegister(); return false;"
+          onsubmit="register(); return false;"
           aria-label="Registration form"
         >
           <div class="two-col">
@@ -34,7 +34,7 @@
               <label for="firstName">First name</label>
               <input
                 type="text"
-                id="firstName"
+                id="userFirstName"
                 name="firstName"
                 placeholder="First name"
                 required
@@ -46,7 +46,7 @@
               <label for="lastName">Last name</label>
               <input
                 type="text"
-                id="lastName"
+                id="userLastName"
                 name="lastName"
                 placeholder="Last name"
                 required
@@ -60,7 +60,7 @@
               <label for="username">Username</label>
               <input
                 type="text"
-                id="username"
+                id="userLogin"
                 name="username"
                 placeholder="Create a username"
                 required
@@ -74,7 +74,7 @@
               <div class="password-wrap">
                 <input
                   type="password"
-                  id="password"
+                  id="userPassword"
                   name="password"
                   placeholder="Create a password"
                   required

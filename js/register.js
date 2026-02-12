@@ -4,8 +4,8 @@ const extension = 'php';
 function register(){
     let firstName = document.getElementById("userFirstName").value;
     let lastName = document.getElementById("userLastName").value;
-    let login = document.getElementById("userLogin");
-    let password = document.getElementById("userPassword");
+    let login = document.getElementById("userLogin").value;
+    let password = document.getElementById("userPassword").value;
 
     let tmp = {
         firstName: firstName,
@@ -26,10 +26,10 @@ function register(){
             let response = JSON.parse(xhr.responseText);
 
             if(response.success){
-                document.getElementById("userResult").innerHTML = "User added successfully!"
+                document.getElementById("registerResult").innerHTML = "User added successfully!"
             }
             else{
-                document.getElementById("userResult").innerHTML = "Error: " + response.error;
+                document.getElementById("registerResult").innerHTML = "Error: " + response.error;
             }
         }
     }

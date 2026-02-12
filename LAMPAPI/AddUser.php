@@ -4,7 +4,7 @@
     // Get Contact Data from Frontend
     $firstName = $inData["firstName"] ?? "";
     $lastName = $inData["lastName"] ?? "";
-    $username = $inData["username"] ?? "";
+    $username = $inData["login"] ?? "";
     $password = $inData["password"] ?? "";
     
     // Connect to mysql server as superuser
