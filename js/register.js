@@ -1,5 +1,3 @@
-const extension = 'php';
-
 function register(){
     let firstName = document.getElementById("userFirstName").value;
     let lastName = document.getElementById("userLastName").value;
