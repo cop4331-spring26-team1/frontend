@@ -1,4 +1,5 @@
 <?php
+    die("TEST FILE: " . __FILE__);
     $inData = getRequestInfo();
     
     // Get Contact Data from Frontend

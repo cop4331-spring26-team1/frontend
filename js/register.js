@@ -1,4 +1,3 @@
-const urlBase = 'http://134.199.207.149/LAMPAPI';
 const extension = 'php';
 
 function register(){
