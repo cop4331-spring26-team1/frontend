@@ -1,9 +1,11 @@
+** DB schema changed to allow hashed passwords, changed DB schema on server **
+
 - sending cookies from the client is not safe
-- DB schema changed to allow hashed passwords
+
 - validation for username password length etc
-- ListAll is automatic : probably not needed
+- ListAll is automatic in the UI - consider changing
 - no Admin functionality
-- API testing folder
-- members and roles
 - figure out presentation requirements/who explains what
-- prevent SQL injection
+- prevent SQL injection?
+- implement proper http response codes in /LAMPAPI
+- make sure API responses are consistent (success always goes in top)

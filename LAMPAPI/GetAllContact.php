@@ -15,7 +15,7 @@ $stmt->bind_param("i", $userId);
 $stmt->execute();
 
 $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-sendJson(["results" => $result]);
+sendJson(["results" => $result, "success" => true]);
 
 $stmt->close();
 $conn->close();

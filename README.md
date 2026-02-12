@@ -38,6 +38,7 @@ Dominic Valerio - DevSecOps
 SmallProject/
 ├── public/          # HTML, JS, and CSS files (Frontend)
 ├── LAMPAPI/         # PHP files (Backend API)
+├── test/            # Unit Testing files
 └── database/        # SQL schema used to create the DB
 ```
 
