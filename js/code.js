@@ -175,7 +175,8 @@ function doLogin() {
       lastName = jsonObject.lastName || "";
 
       saveCookie();
-      if (userId === 1) window.location.href = "admin/admin.html";
+      // if (userId === 1) window.location.href = "admin/admin.html";
+      if (userId === 1) window.location.href = "contacts.html";
       else window.location.href = "contacts.html";
     };
 
