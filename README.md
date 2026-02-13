@@ -14,6 +14,8 @@ Test/Development: http://129.212.176.193/
 ### Tools
 
 Project Managment: Gantt Chart | Trello  
+https://trello.com/b/fkqLTEpM/smallproject
+
 Database: MySQL | Entity Relation Diagram   
 API Dev Documentation: Swagger   
 
