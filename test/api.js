@@ -1,6 +1,10 @@
 // Node.js file to test endpoints
+
+
 const urlBase = "http://134.199.207.149/LAMPAPI"
 const extension = "php"
+
+//const urlBase = "http://localhost/SmallProjectGroup/LAMPAPI"
 
 /**
  * @param {string} label - Display name for the test
@@ -85,9 +89,4 @@ async function testEndpoint(label, filename, payload = {}) {
     });
 
     return; 
-
-    // --- CONTACT TESTS ---
-    await testEndpoint('Should retrieve all user contacts', 'GetAllContact', { userId: 0 });
-    
-    console.log("\n--- Tests Completed ---");
 })();
