@@ -1,78 +1,53 @@
 <?php
-    $inData = getRequestInfo();
+require_once "Util.php";
 
-    $search = $inData["search"] ?? "";
-    $userId = intval($inData["userId"] ?? 0);
+$inData = getRequestInfo();
 
-    $conn = new mysqli("localhost", "localUser", "SmallProject", "SmallProject_DB");
+$search = $inData["search"] ?? "";
+$userId = intval($inData["userId"] ?? 0);
 
-    if ($conn->connect_error)
-    {
-        returnWithError($conn->connect_error);
-        exit();
-    }
+$conn = getDB();
 
-    if ($userId <= 0)
-    {
-        returnWithError("Invalid userId");
-        $conn->close();
-        exit();
-    }
+if ($conn->connect_error) {
+    returnWithError($conn->connect_error);
+    exit();
+}
 
-    $search = "%" . $search . "%";
+if ($userId <= 0) {
+    returnWithError("Invalid userId");
+    $conn->close();
+    exit();
+}
 
-    $stmt = $conn->prepare(
-        "SELECT ID, FirstName, LastName, Phone, Email
+$search = "%" . $search . "%";
+
+$stmt = $conn->prepare(
+    "SELECT ID, FirstName, LastName, Phone, Email
          FROM Contacts
          WHERE UserID=?
            AND (FirstName LIKE ? OR LastName LIKE ?)"
-    );
+);
 
-    if (!$stmt)
-    {
-        returnWithError($conn->error);
-        $conn->close();
-        exit();
-    }
-
-    $stmt->bind_param("iss", $userId, $search, $search);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $contacts = [];
-    while ($row = $result->fetch_assoc())
-    {
-        $contacts[] = $row;
-    }
-
-    if (count($contacts) > 0)
-        returnWithInfo($contacts);
-    else
-        returnWithError("No Records Found");
-
-    $stmt->close();
+if (!$stmt) {
+    returnWithError($conn->error);
     $conn->close();
+    exit();
+}
 
-    // Helpers
-    function getRequestInfo()
-    {
-        return json_decode(file_get_contents('php://input'), true);
-    }
+$stmt->bind_param("iss", $userId, $search, $search);
+$stmt->execute();
+$result = $stmt->get_result();
 
-    function sendResultInfoAsJson($obj)
-    {
-        header('Content-type: application/json');
-        echo json_encode($obj);
-    }
+$contacts = [];
+while ($row = $result->fetch_assoc()) {
+    $contacts[] = $row;
+}
 
-    function returnWithError($err)
-    {
-        sendResultInfoAsJson(["results" => [], "error" => $err]);
-    }
+if (count($contacts) > 0)
+    returnWithInfo($contacts);
+else
+    returnWithError("No Records Found");
 
-    function returnWithInfo($contacts)
-    {
-        sendResultInfoAsJson(["results" => $contacts, "error" => ""]);
-    }
+$stmt->close();
+$conn->close();
 ?>
-

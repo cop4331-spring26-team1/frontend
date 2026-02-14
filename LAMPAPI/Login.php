@@ -1,76 +1,51 @@
-
 <?php
+require_once "Util.php";
 
-	$inData = getRequestInfo();
-	
-	$id = 0;
-	$FirstName = "";
-	$LastName = "";
+// Get Login Info
+$inData = getRequestInfo();
+$login = $inData['login'] ?? '';
+$password = $inData['password'] ?? '';
 
-	$conn = new mysqli("localhost", "localUser", "SmallProject", "SmallProject_DB"); 	
-	if( $conn->connect_error )
-	{
-		returnWithError( $conn->connect_error );
-	}
-	else
-	{
-		$stmt = $conn->prepare("SELECT ID,FirstName,LastName FROM Users WHERE Login=? AND Password =?");
-		$stmt->bind_param("ss", $inData["login"], $inData["password"]);
-		$stmt->execute();
-		$result = $stmt->get_result();
+// Initialize return values
+$id = 0;
+$firstName = "";
+$lastName = "";
 
-		if( $row = $result->fetch_assoc()  )
-		{
-			returnWithInfo( $row['FirstName'], $row['LastName'], $row['ID'] );
-		}
-		else
-		{
-			returnWithError("No Records Found");
-		}
+// Get DB
+$conn = getDB();
+if ($conn->connect_error) {
+    returnWithError($conn->connect_error);
+} else {
+    // Look up the user by username only
+    $stmt = $conn->prepare("SELECT ID, FirstName, LastName, Password FROM Users WHERE Login=?");
+    $stmt->bind_param("s", $login);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-		$stmt->close();
-		$conn->close();
-	}
-	
-	function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
-	}
+    if ($row = $result->fetch_assoc()) {
+        // Check password against the hash
+        if (password_verify($password, $row['Password'])) {
+            $id = $row['ID'];
+            $firstName = $row['FirstName'];
+            $lastName = $row['LastName'];
 
-	function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
-	}
-	
-	function returnWithError( $err )
-	{
-		// $retValue = '{"id":0,"FirstName":"","LastName":"","error":"' . $err . '"}';
-		// sendResultInfoAsJson( $retValue );
+            $retValue = array(
+                "id" => $id,
+                "firstName" => $firstName,
+                "lastName" => $lastName,
+                "error" => "",
+				"success" => true
+            );
 
-		$retValue = json_encode(array(
-			"id" => 0,
-			"firstName" => "",
-			"lastName" => "",
-			"error" => $err
-		));
+            sendJson($retValue);
+        } else {
+            returnWithError("Invalid password");
+        }
+    } else {
+        returnWithError("No records found");
+    }
 
-		sendResultInfoAsJson($retValue);
-	}
-	
-	function returnWithInfo( $FirstName, $LastName, $id )
-	{
-		// $retValue = '{"id":' . $id . ',"FirstName":"' . $FirstName . '","LastName":"' . $LastName . '","error":""}';
-		// sendResultInfoAsJson( $retValue );
-
-		$retValue = json_encode(array(
-			"id" => $id,
-			"firstName" => $FirstName,
-			"lastName" => $LastName,
-			"error" => ""
-		));
-		
-		sendResultInfoAsJson($retValue);
-	}
-	
+    $stmt->close();
+    $conn->close();
+}
 ?>
