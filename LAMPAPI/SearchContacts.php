@@ -25,7 +25,17 @@ $stmt = $conn->prepare(
     "SELECT ID, FirstName, LastName, Phone, Email
          FROM Contacts
          WHERE UserID=?
-           AND (FirstName LIKE ? OR LastName LIKE ? OR Phone LIKE ? OR Email LIKE ?)"
+            AND (FirstName LIKE ? OR LastName LIKE ? OR Phone LIKE ? OR Email LIKE ?)
+            ORDER BY
+                CASE
+                    WHEN FirstName LIKE ? THEN 1
+                    WHEN LastName LIKE ? THEN 2
+                    WHEN EMAIL LIKE ? THEN 3
+                    WHEN PHONE LIKE ? THEN 4
+                    ELSE 5
+                END,
+                LastName ASC,
+                FirstName ASC"
 );
 
 if (!$stmt) {
@@ -34,7 +44,7 @@ if (!$stmt) {
     exit();
 }
 
-$stmt->bind_param("issss", $userId, $search, $search, $search, $search);
+$stmt->bind_param("issssssss", $userId, $search, $search, $search, $search, $search, $search, $search, $search);
 $stmt->execute();
 $result = $stmt->get_result();
 
