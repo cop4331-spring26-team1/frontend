@@ -39,10 +39,10 @@ if ($conn->connect_error) {
 
             sendJson($retValue);
         } else {
-            returnWithError("Invalid password");
+            returnWithError("Your username or password was incorrect. Please try again.");
         }
     } else {
-        returnWithError("No records found");
+        returnWithError("Your username or password was incorrect. Please try again.");
     }
 
     $stmt->close();

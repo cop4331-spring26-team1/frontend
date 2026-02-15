@@ -164,6 +164,12 @@ function doLogin() {
         return;
       }
 
+      if(jsonObject.error && jsonObject.error.length > 0){
+        setStatus(resultEl, jsonObject.error, true, true, 0);
+        passEl.focus();
+        return;
+      }
+
       userId = jsonObject.id;
 
       if (userId < 1) {
