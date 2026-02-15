@@ -5,7 +5,7 @@ A LAMP-based contact management application with user authentication.
 
 ## Website Details
 
-Production: https://small.liamab.com/
+Production: https://smallproject.liamab.com/
 
 Gasper Test: http://129.212.176.193/
 
