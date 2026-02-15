@@ -25,7 +25,7 @@ $stmt = $conn->prepare(
     "SELECT ID, FirstName, LastName, Phone, Email
          FROM Contacts
          WHERE UserID=?
-           AND (FirstName LIKE ? OR LastName LIKE ?)"
+           AND (FirstName LIKE ? OR LastName LIKE ? OR Phone LIKE ? OR Email LIKE ?)"
 );
 
 if (!$stmt) {
@@ -34,20 +34,33 @@ if (!$stmt) {
     exit();
 }
 
-$stmt->bind_param("iss", $userId, $search, $search);
+$stmt->bind_param("issss", $userId, $search, $search, $search, $search);
 $stmt->execute();
 $result = $stmt->get_result();
 
 $contacts = [];
 while ($row = $result->fetch_assoc()) {
-    $contacts[] = $row;
+    $contacts[] = [
+        "id" => (int)$row["ID"],
+        "firstName" => $row["FirstName"],
+        "lastName" => $row["LastName"],
+        "phone" => $row["Phone"],
+        "email" => $row["Email"]
+    ];
 }
-
-if (count($contacts) > 0)
-    returnWithInfo($contacts);
-else
-    returnWithError("No Records Found");
 
 $stmt->close();
 $conn->close();
+
+if (count($contacts) > 0) {
+    sendJson([
+        "results" => $contacts,
+        "error" => ""
+    ]);
+} else {
+    sendJson([
+        "results" => [],
+        "error" => "No Records Found"
+    ]);
+}
 ?>
