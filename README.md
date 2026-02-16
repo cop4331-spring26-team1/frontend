@@ -5,7 +5,7 @@ A LAMP-based contact management application with user authentication.
 
 ## Website Details
 
-Production: https://smallproject.liamab.com/
+Production: http://smallproject.liamab.com/
 
 Gasper Test: http://129.212.176.193/
 
@@ -18,8 +18,9 @@ Kyle Test: http://134.199.207.149
 Project Managment: Gantt Chart | Trello  
 https://trello.com/b/fkqLTEpM/smallproject
 
-Database: MySQL | Entity Relation Diagram   
-API Dev Documentation: Swagger   
+Database: MySQL | Entity Relation Diagram  
+Server: Apache
+API Dev Documentation: Swaggerhub | README   
 
 ### Roles
 
@@ -75,174 +76,192 @@ Once configured, you can access the user interface by navigating to:
 **Protocol:** All requests use `POST` with `Content-Type: application/json`.  
 **Format:** All responses are returned as JSON objects.
 
+## User Authentication & Account
 
+### Register User
+
+`POST /Register.php`
+Registers a new account. The password is automatically secured using `PASSWORD_BCRYPT`.
+
+**Request Body:**
+
+```json
+{
+  "firstName": "Fred",
+  "lastName": "Flintstone",
+  "login": "fred123",
+  "password": "secretPassword"
+}
+
+```
+
+**Response (Success):**
+
+```json
+{
+  "error": "",
+  "success": true,
+  "msg": ""
+}
+
+```
 
 ---
 
-## Login
+### Login
+
 `POST /Login.php`
+Validates credentials using `password_verify()`.
 
-**Payload:**
-```json
-{
-  "login": "username",
-  "password": "password"
-}
-```
-**Response:**
-
-Success: 
-```json
-{ "id": 3, "firstName": "Alice", "lastName": "Smith" }
-```
-
-Failure: 
-```json
-{ "id": 0 }
-```
-
-## Register   
-`POST /Register.php`  
-Used to create a new user account.
-
-**Payload:**
+**Request Body:**
 
 ```json
 {
-  "firstName": "Alice",
-  "lastName": "Smith",
-  "login": "username",
-  "password": "password"
+  "login": "fred123",
+  "password": "secretPassword"
 }
+
 ```
-**Response:**
 
-Success: {}
+**Response (Success):**
 
-Failure: { "error": "Username already exists" }
+```json
+{
+  "id": 1,
+  "firstName": "Fred",
+  "lastName": "Flintstone",
+  "error": "",
+  "success": true
+}
 
-## Add Contact
+```
+
+---
+
+## Contact Management
+
+### Add Contact
+
 `POST /AddContact.php`
+Creates a new entry in the `Contacts` table.
 
-**Payload:**
+**Request Body:**
 
 ```json
 {
-  "firstName": "Bob",
-  "lastName": "Jones",
-  "phone": "407-222-4567",
-  "email": "bob@example.com",
-  "userId": 3
+  "firstName": "Barney",
+  "lastName": "Rubble",
+  "phone": "555-1234",
+  "email": "barney@bedrock.com",
+  "userId": 1
 }
+
 ```
 
-**Response:**
+---
 
-Success: 
-```json 
-{}
-```
+### Get All Contacts
 
-Failure: 
+`POST /GetAllContacts.php`
+Retrieves the full list of contacts for a specific user, sorted by name.
+
+**Request Body:**
+
 ```json
-{ "error": "Invalid phone number" }
-```
-
-## Search Contacts
-`POST /SearchContact.php`
-
-**Payload:**
-
-```json 
 {
-  "search": "Bob",
-  "userId": 3
+  "userId": 1
 }
+
 ```
 
-**Response:**
+**Response (Success):**
 
 ```json
 {
   "results": [
     {
-      "id": 5,
-      "firstName": "Bob",
-      "lastName": "Jones",
-      "phone": "407-222-4567",
-      "email": "bob@example.com"
+      "id": 10,
+      "firstName": "Barney",
+      "lastName": "Rubble",
+      "phone": "555-1234",
+      "email": "barney@bedrock.com",
+      "lastModified": "2026-02-16 12:00:00",
+      "dateCreated": "2026-02-16 12:00:00"
     }
-  ]
+  ],
+  "error": ""
 }
+
 ```
 
-## Get All Contacts
-`POST /GetAllContact.php`
+---
 
-**Payload:**
+### Search Contacts
+
+`POST /SearchContacts.php`
+Performs a fuzzy search across Name, Phone, and Email. Results are prioritized by matches in `FirstName` first, then `LastName`.
+
+**Request Body:**
 
 ```json
 {
-  "userId": 3
+  "userId": 1,
+  "search": "Barney"
 }
+
 ```
-**Response:**
 
-```json
-{
-  "results": [
-    { "id": 5, "firstName": "Bob", "lastName": "Jones", "phone": "407-222-4567", "email": "bob@example.com" },
-    { "id": 6, "firstName": "Alice", "lastName": "Smith", "phone": "407-123-4567", "email": "alice@example.com" }
-  ]
-}
-``` 
+---
 
-## Update Contact
+### Update Contact
+
 `POST /UpdateContact.php`
+Modifies an existing contact. Requires both `id` (the contact) and `userId` (the owner) for security.
 
-**Payload:**
+**Request Body:**
 
 ```json
 {
-  "id": 5,
-  "firstName": "Robert",
-  "lastName": "Jones",
-  "phone": "407-222-4567",
-  "email": "robert@example.com",
-  "userId": 3
+  "id": 10,
+  "userId": 1,
+  "firstName": "Barney",
+  "lastName": "Rubble",
+  "phone": "555-9999",
+  "email": "barney.new@bedrock.com"
 }
-```
-**Response:**
 
-Success: 
-```json
-{}
 ```
 
-Failure: 
-```json
-{ "error": "Invalid contact ID" }
-```
+---
 
-## Delete Contact
+### Delete Contact
+
 `POST /DeleteContact.php`
+Permanently removes a contact record.
 
-**Payload:**
+**Request Body:**
 
 ```json
 {
-  "id": 5,
-  "userId": 3
+  "id": 10,
+  "userId": 1
 }
-```
-**Response:**
 
-Success: 
-```json
-{}
 ```
 
-Failure: 
+---
+
+### Error Handling
+
+All endpoints return `success` and `error` fields:
+
 ```json
-{ "error": "Cannot delete contact" }
+{
+  "success": false,
+  "error": "error message here"
+}
+
 ```
+## AI Credits
+
+Google Gemini and ChatGPT used to help with improving security and generating documentation.
