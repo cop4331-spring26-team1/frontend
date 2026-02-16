@@ -1,3 +1,4 @@
+//code.js
 const urlBase = "http://smallproject.liamab.com/LAMPAPI";
 const extension = "php";
 
