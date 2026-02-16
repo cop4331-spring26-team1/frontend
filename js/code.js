@@ -554,36 +554,44 @@ function escapeAttr(v) {
     .replaceAll(">", "&gt;");
 }
 
+function tester(){
+  print("test");  
+}
+
 function fullNameFromContact(c) {
   const f = String(c.firstName ?? "").trim();
   const l = String(c.lastName ?? "").trim();
   return (f + " " + l).trim();
 }
 
-function formatLastModified(timestamp){
-  if(!timestamp) return "";
+function formatLastModified(timestamp) {
+  if (!timestamp) return "";
 
-  try{
-    const date = new Date(timestamp);
-    const now = new Date();
+  // Force ISO-8601 + UTC
+  const date = new Date(timestamp.replace(" ", "T") + "Z");
 
-    const diffMs = now - date;
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 360000);
-    const diffDays = Math.floor(diffMs / 86400000);
+  if (isNaN(date.getTime())) return "";
 
-    if (diffMins < 1) return "Just now";
-    if (diffMins < 60) return `${diffMins} min${diffMins !== 1 ? 's' : ''} ago`;
-    if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-    if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
 
-    const timeEng = {month: 'short', day: 'numeric', year: 'numeric'};
-    return date.toLocaleDateString('en-US', timeEng);
-  }
-  catch(err){
-    return "";
-  }
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins} min ago`;
+  if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+  if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
+
+
 
 function renderContacts(results) {
   const listEl = document.getElementById("contactList");
@@ -596,7 +604,7 @@ function renderContacts(results) {
       const phone = safeText(c.phone);
       const email = safeText(c.email);
       const lastModified = formatLastModified(c.lastModified);
-
+      console.log("HELLO");
       const labelName = fullNameFromContact(c) || "contact";
 
       return `
@@ -604,7 +612,7 @@ function renderContacts(results) {
           <div><strong>${fullName}</strong></div>
           <div>${phone}</div>
           <div>${email}</div>
-          ${lastModified ? `<div class = "last-modified">Last updated: ${lastModified}</div>` : ''}
+          <div>${lastModified}</div>
 
           <div class="contact-actions">
             <button class="small-button btn-edit" type="button" aria-label="Edit ${escapeAttr(
