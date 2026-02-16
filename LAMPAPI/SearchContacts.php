@@ -22,7 +22,7 @@ if ($userId <= 0) {
 $search = "%" . $search . "%";
 
 $stmt = $conn->prepare(
-    "SELECT ID, FirstName, LastName, Phone, Email
+    "SELECT ID, FirstName, LastName, Phone, Email, LastModified
          FROM Contacts
          WHERE UserID=?
             AND (FirstName LIKE ? OR LastName LIKE ? OR Phone LIKE ? OR Email LIKE ?)
@@ -55,7 +55,8 @@ while ($row = $result->fetch_assoc()) {
         "firstName" => $row["FirstName"],
         "lastName" => $row["LastName"],
         "phone" => $row["Phone"],
-        "email" => $row["Email"]
+        "email" => $row["Email"],
+        "lastModified" => $row["LastModified"]
     ];
 }
 

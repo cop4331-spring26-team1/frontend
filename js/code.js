@@ -560,6 +560,31 @@ function fullNameFromContact(c) {
   return (f + " " + l).trim();
 }
 
+function formatLastModified(timestamp){
+  if(!timestamp) return "";
+
+  try{
+    const date = new Date(timestamp);
+    const now = new Date();
+
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 360000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins} min${diffMins !== 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+
+    const timeEng = {month: 'short', day: 'numeric', year: 'numeric'};
+    return date.toLocaleDateString('en-US', timeEng);
+  }
+  catch(err){
+    return "";
+  }
+}
+
 function renderContacts(results) {
   const listEl = document.getElementById("contactList");
   if (!listEl) return;
@@ -570,6 +595,7 @@ function renderContacts(results) {
       const fullName = safeText(fullNameFromContact(c));
       const phone = safeText(c.phone);
       const email = safeText(c.email);
+      const lastModified = formatLastModified(c.lastModified);
 
       const labelName = fullNameFromContact(c) || "contact";
 
@@ -578,6 +604,7 @@ function renderContacts(results) {
           <div><strong>${fullName}</strong></div>
           <div>${phone}</div>
           <div>${email}</div>
+          ${lastModified ? `<div class = "last-modified">Last updated: ${lastModified}</div>` : ''}
 
           <div class="contact-actions">
             <button class="small-button btn-edit" type="button" aria-label="Edit ${escapeAttr(
