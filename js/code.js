@@ -564,6 +564,15 @@ function fullNameFromContact(c) {
   return (f + " " + l).trim();
 }
 
+function formatDate(timestamp){
+  if(!timestamp) return "";
+
+  const date = new Date(timestamp.replace(" ", "T") + "Z");
+  if(isNaN(date)) return "";
+
+  return date.toLocaleTimeString("en-US", {month: "short", day: "numeric", year: "numeric"});
+}
+
 function formatLastModified(timestamp) {
   if (!timestamp) return "";
 
@@ -604,7 +613,8 @@ function renderContacts(results) {
       const phone = safeText(c.phone);
       const email = safeText(c.email);
       const lastModified = formatLastModified(c.lastModified);
-      console.log("HELLO");
+      const dateCreated = formatDate(c.dateCreated);
+
       const labelName = fullNameFromContact(c) || "contact";
 
       return `
@@ -612,7 +622,8 @@ function renderContacts(results) {
           <div><strong>${fullName}</strong></div>
           <div>${phone}</div>
           <div>${email}</div>
-          <div>${lastModified}</div>
+          <div>Last Modified: ${lastModified}</div>
+          <div>Created: ${dateCreated}</div>
 
           <div class="contact-actions">
             <button class="small-button btn-edit" type="button" aria-label="Edit ${escapeAttr(

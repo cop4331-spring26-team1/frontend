@@ -23,7 +23,7 @@ if ($conn->connect_error) {
     exit();
 }
 
-$stmt = $conn->prepare("SELECT ID, FirstName, LastName, Phone, Email, LastModified FROM Contacts WHERE UserID=? ORDER BY LastName ASC, FirstName ASC, ID ASC");
+$stmt = $conn->prepare("SELECT ID, FirstName, LastName, Phone, Email, LastModified, DateCreated FROM Contacts WHERE UserID=? ORDER BY LastName ASC, FirstName ASC, ID ASC");
 
 if (!$stmt) {
     $conn->close();
@@ -46,7 +46,8 @@ while ($row = $result->fetch_assoc()) {
         "lastName" => $row["LastName"],
         "phone" => $row["Phone"],
         "email" => $row["Email"],
-        "lastModified" => $row["LastModified"]
+        "lastModified" => $row["LastModified"],
+        "dateCreated" => $row["DateCreated"]
     ];
 }
 
